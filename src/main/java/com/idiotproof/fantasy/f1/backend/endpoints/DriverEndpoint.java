@@ -17,7 +17,7 @@ public class DriverEndpoint {
     DriverService driverService;
 
     @GetMapping("/drivers")
-    public List<Driver> getCircuit() {
+    public List<Driver> getDrivers() {
         return driverService.getDrivers();
     }
 
