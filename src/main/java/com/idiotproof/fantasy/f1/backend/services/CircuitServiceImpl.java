@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CircuitServiceImpl implements CircuitService {
@@ -16,5 +17,10 @@ public class CircuitServiceImpl implements CircuitService {
     @Override
     public List<Circuit> getCircuits() {
         return circuitRepo.findAll();
+    }
+
+    @Override
+    public Optional<Circuit> getCircuit(String id) {
+        return circuitRepo.findById(Integer.parseInt(id));
     }
 }

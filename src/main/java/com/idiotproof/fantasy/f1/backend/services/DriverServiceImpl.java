@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DriverServiceImpl implements DriverService {
@@ -16,5 +17,10 @@ public class DriverServiceImpl implements DriverService {
     @Override
     public List<Driver> getDrivers() {
         return driverRepo.findAll();
+    }
+
+    @Override
+    public Optional<Driver> getDriver(String id) {
+        return driverRepo.findById(Integer.parseInt(id));
     }
 }

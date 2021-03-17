@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ConstructorServiceImpl implements ConstructorService {
@@ -16,5 +17,10 @@ public class ConstructorServiceImpl implements ConstructorService {
     @Override
     public List<Constructor> getConstructors() {
         return constructorRepo.findAll();
+    }
+
+    @Override
+    public Optional<Constructor> getConstructor(String id) {
+        return constructorRepo.findById(Integer.parseInt(id));
     }
 }
