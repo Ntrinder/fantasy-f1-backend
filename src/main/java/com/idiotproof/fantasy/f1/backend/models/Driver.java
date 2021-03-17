@@ -14,19 +14,19 @@ public class Driver implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column("driver_number")
+    @Column(name = "driver_number")
     private int driverNumber;
 
-    @Column("driver_code")
+    @Column(name = "driver_code")
     private String driverCode;
 
-    @Column("first_name")
+    @Column(name = "first_name")
     private String firstName;
 
-    @Column("last_name")
+    @Column(name = "last_name")
     private String lastName;
 
-    @Column("date_of_birth")
+    @Column(name = "date_of_birth")
     private String dateOfBirth;
 
     private String nationality;

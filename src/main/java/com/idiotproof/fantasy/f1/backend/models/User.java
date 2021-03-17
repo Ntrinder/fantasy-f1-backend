@@ -15,17 +15,17 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column("first_name")
+    @Column(name = "first_name")
     private String firstName;
 
-    @Column("last_name")
+    @Column(name = "last_name")
     private String lastName;
 
     private String username;
 
     private String email;
 
-    @Column("join_date")
+    @Column(name = "join_date")
     private Date joinDate;
 
 }

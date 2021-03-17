@@ -14,7 +14,7 @@ public class Circuit implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column("circuit_id")
+    @Column(name = "circuit_id")
     private String circuitId;
 
     private String name;

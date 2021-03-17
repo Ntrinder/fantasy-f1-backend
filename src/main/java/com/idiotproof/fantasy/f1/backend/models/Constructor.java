@@ -14,7 +14,7 @@ public class Constructor implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column("constructor_id")
+    @Column(name = "constructor_id")
     private String constructorId;
 
     private String name;
