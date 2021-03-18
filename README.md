@@ -11,4 +11,4 @@ engine, a user accesscontrol service and some other things which I will
 create and add over time.
 
 The day I remove the localhost password from the repo is the day I
-start taking this project seriouslty
+start taking this project seriously
