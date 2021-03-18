@@ -9,3 +9,6 @@ communicate with a mysql database. I will add a link to the front-end
 github project when I set one up. This project may also contain a fantasy
 engine, a user accesscontrol service and some other things which I will
 create and add over time.
+
+The day I remove the localhost password from the repo is the day I
+start taking this project seriouslty
