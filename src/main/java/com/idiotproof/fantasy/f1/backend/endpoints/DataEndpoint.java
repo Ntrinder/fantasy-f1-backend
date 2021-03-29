@@ -15,5 +15,15 @@ public class DataEndpoint {
     public void updateDrivers() {
         dataService.updateDrivers();
     }
+
+    @GetMapping("/update-constructors")
+    public void updateConstructors() {
+        dataService.updateConstructors();
+    }
+
+    @GetMapping("/update-circuits")
+    public void updateCircuits() {
+        dataService.updateCircuits();
+    }
 }
 

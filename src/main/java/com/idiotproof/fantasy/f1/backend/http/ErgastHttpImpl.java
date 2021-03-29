@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.idiotproof.fantasy.f1.backend.models.Circuit;
+import com.idiotproof.fantasy.f1.backend.models.Constructor;
 import com.idiotproof.fantasy.f1.backend.models.Driver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,11 +30,12 @@ public class ErgastHttpImpl implements ErgastHttp {
 
     private final static String API_URL = "http://ergast.com/api/f1";
 
+    private static HttpRequest request;
 
-    public List<Driver> getDrivers(boolean asJson) {
+    private static HttpResponse<String> response;
 
-        HttpRequest request;
-        HttpResponse<String> response;
+
+    public List<Driver> getDriversFromApi(boolean asJson) {
 
         String driverUrl = API_URL + "/2020/drivers";
         if (asJson) driverUrl += ".json";
@@ -46,10 +49,8 @@ public class ErgastHttpImpl implements ErgastHttp {
                     .build();
 
         } catch (URISyntaxException e) {
-
             LOG.error("Error when creating HttpRequest: " + e);
             return null;
-
         }
 
         try {
@@ -61,10 +62,8 @@ public class ErgastHttpImpl implements ErgastHttp {
                     .send(request, HttpResponse.BodyHandlers.ofString());
 
         } catch (IOException | InterruptedException e) {
-
             LOG.error("Error when sending HttpRequest: " + e);
             return null;
-
         }
 
         JsonNode jsonNode;
@@ -81,6 +80,102 @@ public class ErgastHttpImpl implements ErgastHttp {
         }
 
         return drivers;
+    }
+
+    @Override
+    public List<Constructor> getConstructorsFromApi(boolean asJson) {
+
+        String constructorUrl = API_URL + "/2020/constructors";
+        if (asJson) constructorUrl += ".json";
+
+        try {
+
+            request = HttpRequest.newBuilder()
+                    .uri(new URI(constructorUrl))
+                    .timeout(Duration.of(5, SECONDS))
+                    .GET()
+                    .build();
+
+        } catch (URISyntaxException e) {
+            LOG.error("Error when creating HttpRequest: " + e);
+            return null;
+        }
+
+        try {
+
+            LOG.info("Getting constructor data from url: " + constructorUrl);
+            response = HttpClient.newBuilder()
+                    .proxy(ProxySelector.getDefault())
+                    .build()
+                    .send(request, HttpResponse.BodyHandlers.ofString());
+
+        } catch (IOException | InterruptedException e) {
+            LOG.error("Error when sending HttpRequest: " + e);
+            return null;
+        }
+
+        JsonNode jsonNode;
+        List<Constructor> constructors = null;
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+
+            jsonNode = mapper.readTree(response.body()).at("/MRData/ConstructorTable/Constructors");
+            constructors = mapper.convertValue(jsonNode, new TypeReference<List<Constructor>>() {});
+
+        } catch (JsonProcessingException e) {
+            LOG.error("Error when converting response to Json: " + e);
+        }
+
+        return constructors;
+    }
+
+    @Override
+    public List<Circuit> getCircuitsFromApi(boolean asJson) {
+
+        String circuitUrl = API_URL + "/2020/circuits";
+        if (asJson) circuitUrl += ".json";
+
+        try {
+
+            request = HttpRequest.newBuilder()
+                    .uri(new URI(circuitUrl))
+                    .timeout(Duration.of(5, SECONDS))
+                    .GET()
+                    .build();
+
+        } catch (URISyntaxException e) {
+            LOG.error("Error when creating HttpRequest: " + e);
+            return null;
+        }
+
+        try {
+
+            LOG.info("Getting circuit data from url: " + circuitUrl);
+            response = HttpClient.newBuilder()
+                    .proxy(ProxySelector.getDefault())
+                    .build()
+                    .send(request, HttpResponse.BodyHandlers.ofString());
+
+        } catch (IOException | InterruptedException e) {
+            LOG.error("Error when sending HttpRequest: " + e);
+            return null;
+        }
+
+        JsonNode jsonNode;
+        List<Circuit> circuits = null;
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+
+            jsonNode = mapper.readTree(response.body()).at("/MRData/CircuitTable/Circuits");
+            circuits = mapper.convertValue(jsonNode, new TypeReference<List<Circuit>>() {});
+
+        } catch (JsonProcessingException e) {
+            LOG.error("Error when converting response to Json: " + e);
+        }
+
+        return circuits;
     }
 
 }
