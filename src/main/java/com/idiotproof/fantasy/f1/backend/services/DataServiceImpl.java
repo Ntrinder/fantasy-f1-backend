@@ -1,10 +1,13 @@
 package com.idiotproof.fantasy.f1.backend.services;
 
 import com.idiotproof.fantasy.f1.backend.http.ErgastHttp;
+import com.idiotproof.fantasy.f1.backend.models.Driver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class DataServiceImpl implements DataService {
@@ -15,12 +18,8 @@ public class DataServiceImpl implements DataService {
     ErgastHttp http;
 
     @Override
-    public String updateDrivers() {
+    public List<Driver> updateDrivers() {
         LOG.info("updating drivers from api.");
-        // connect to api
-        // get list of drivers in json
-        // convert that to a list of drivers
-        // update the drivers table with the list of drivers from the api response
-        return http.getDriverData(true);
+        return http.getDrivers(true);
     }
 }
