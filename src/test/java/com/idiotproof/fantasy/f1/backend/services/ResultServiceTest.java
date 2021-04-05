@@ -15,7 +15,7 @@ public class ResultServiceTest {
     ResultService raceService;
 
     @Test
-    public void test_findRaces() {
+    public void test_findResults() {
         List<Result> fastestLaps = raceService.findResults();
         Assertions.assertNotNull(fastestLaps, "Error Retrieving all the results.");
     }

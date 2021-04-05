@@ -15,7 +15,7 @@ public class FastestLapServiceTest {
     FastestLapService fastestLapService;
 
     @Test
-    public void test_getAllFastestsLaps() {
+    public void test_findFastestLaps() {
         List<FastestLap> fastestLaps = fastestLapService.findFastestLaps();
         Assertions.assertNotNull(fastestLaps, "Error Retrieving all the fastest laps");
     }
