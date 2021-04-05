@@ -2,21 +2,23 @@ package com.idiotproof.fantasy.f1.backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Data
+@Getter
+@Setter
 @Entity
 @NoArgsConstructor
-@JsonIgnoreProperties(ignoreUnknown = true)
 @Table(name = "drivers")
 public class Driver implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "driver_id")
     private int id;
 
     @Column(name = "driver_number")
@@ -41,5 +43,10 @@ public class Driver implements Serializable {
 
     @JsonProperty("nationality")
     private String nationality;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "constructor_id")
+    @JsonIgnoreProperties("team")
+    private Constructor team;
 
 }

@@ -19,13 +19,13 @@ public class UserServiceImpl implements UserService {
     private UserRepo userRepo;
 
     @Override
-    public List<User> getUsers() {
-        LOG.info("Getting all users.");
+    public List<User> findUsers() {
+        LOG.info("Finding all users.");
         return userRepo.findAll();
     }
 
     @Override
-    public Optional<User> getUser(String id) {
+    public Optional<User> findUser(String id) {
         LOG.info("Getting user with id: " + id);
         return userRepo.findById(Integer.parseInt(id));
     }

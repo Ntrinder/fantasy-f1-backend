@@ -19,13 +19,13 @@ public class UserEndpoint {
 
     // TODO: testing remove later - this is probably detrimental without access control
     @GetMapping("/users")
-    public List<User> getUsers() {
-        return userService.getUsers();
+    public List<User> findUsers() {
+        return userService.findUsers();
     }
 
     @GetMapping("/user/{id}")
-    public Optional<User> getUser(@PathVariable String id) {
-        return userService.getUser(id);
+    public Optional<User> findUser(@PathVariable String id) {
+        return userService.findUser(id);
     }
 
     @DeleteMapping("/user/delete/{id}")
