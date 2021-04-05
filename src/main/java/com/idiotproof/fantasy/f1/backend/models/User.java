@@ -1,6 +1,5 @@
 package com.idiotproof.fantasy.f1.backend.models;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

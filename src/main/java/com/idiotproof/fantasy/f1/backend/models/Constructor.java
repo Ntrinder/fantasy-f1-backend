@@ -1,7 +1,5 @@
 package com.idiotproof.fantasy.f1.backend.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,7 +27,6 @@ public class Constructor implements Serializable {
 
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "constructor_id")
-    @JsonIgnoreProperties("drivers")
     private List<Driver> drivers;
 
 }
