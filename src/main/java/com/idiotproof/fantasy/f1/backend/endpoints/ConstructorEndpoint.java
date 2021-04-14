@@ -5,6 +5,7 @@ import com.idiotproof.fantasy.f1.backend.services.ConstructorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -16,8 +17,15 @@ public class ConstructorEndpoint {
     @Autowired
     ConstructorService constructorService;
 
+    @PostMapping("/update-constructors")
+    public List<Constructor> updateConstructors() {
+        return constructorService.updateConstructors();
+    }
+
     @GetMapping("/constructors")
-    public List<Constructor> getConstructors() { return constructorService.getConstructors(); }
+    public List<Constructor> getConstructors() {
+        return constructorService.getConstructors();
+    }
 
     @GetMapping("/constructor/{id}")
     public Optional<Constructor> getConstructor(@PathVariable String id) {

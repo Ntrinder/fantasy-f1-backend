@@ -7,6 +7,8 @@ import java.util.Optional;
 
 public interface DriverService {
 
+    List<Driver> updateDrivers();
+
     List<Driver> getDrivers();
 
     Optional<Driver> getDriver(String id);

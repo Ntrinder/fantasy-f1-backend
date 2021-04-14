@@ -5,6 +5,7 @@ import com.idiotproof.fantasy.f1.backend.services.CircuitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -16,8 +17,15 @@ public class CircuitEndpoint {
     @Autowired
     CircuitService circuitService;
 
+    @PostMapping("/update-circuits")
+    public List<Circuit> updateCircuits() {
+        return circuitService.updateCircuits();
+    }
+
     @GetMapping("/circuits")
-    public List<Circuit> getCircuits() { return circuitService.getCircuits(); }
+    public List<Circuit> getCircuits() {
+        return circuitService.getCircuits();
+    }
 
     @GetMapping("/circuit/{id}")
     public Optional<Circuit> getCircuit(@PathVariable String id) {

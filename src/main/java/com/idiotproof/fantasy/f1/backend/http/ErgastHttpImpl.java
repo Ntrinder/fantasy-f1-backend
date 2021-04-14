@@ -2,6 +2,7 @@ package com.idiotproof.fantasy.f1.backend.http;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.idiotproof.fantasy.f1.backend.models.Circuit;
@@ -35,7 +36,7 @@ public class ErgastHttpImpl implements ErgastHttp {
     private static HttpResponse<String> response;
 
 
-    public List<Driver> getDriversFromApi(boolean asJson) {
+    public List<Driver> getDrivers(boolean asJson) {
 
         String driverUrl = API_URL + "/2020/drivers";
         if (asJson) driverUrl += ".json";
@@ -68,7 +69,9 @@ public class ErgastHttpImpl implements ErgastHttp {
 
         JsonNode jsonNode;
         List<Driver> drivers = null;
-        ObjectMapper mapper = new ObjectMapper();
+        // adding configs to ignore unknown fields
+        ObjectMapper mapper = new ObjectMapper()
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         try {
 
@@ -83,7 +86,7 @@ public class ErgastHttpImpl implements ErgastHttp {
     }
 
     @Override
-    public List<Constructor> getConstructorsFromApi(boolean asJson) {
+    public List<Constructor> getConstructors(boolean asJson) {
 
         String constructorUrl = API_URL + "/2020/constructors";
         if (asJson) constructorUrl += ".json";
@@ -131,7 +134,7 @@ public class ErgastHttpImpl implements ErgastHttp {
     }
 
     @Override
-    public List<Circuit> getCircuitsFromApi(boolean asJson) {
+    public List<Circuit> getCircuits(boolean asJson) {
 
         String circuitUrl = API_URL + "/2020/circuits";
         if (asJson) circuitUrl += ".json";

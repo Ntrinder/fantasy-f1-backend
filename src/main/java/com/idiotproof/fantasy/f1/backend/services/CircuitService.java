@@ -7,6 +7,8 @@ import java.util.Optional;
 
 public interface CircuitService {
 
+    List<Circuit> updateCircuits();
+
     List<Circuit> getCircuits();
 
     Optional<Circuit> getCircuit(String id);

@@ -7,6 +7,8 @@ import java.util.Optional;
 
 public interface ConstructorService {
 
+    List<Constructor> updateConstructors();
+
     List<Constructor> getConstructors();
 
     Optional<Constructor> getConstructor(String id);

@@ -8,10 +8,10 @@ import java.util.List;
 
 public interface ErgastHttp {
 
-    public List<Driver> getDriversFromApi(boolean asJson);
+    public List<Driver> getDrivers(boolean asJson);
 
-    public List<Constructor> getConstructorsFromApi(boolean asJson);
+    public List<Constructor> getConstructors(boolean asJson);
 
-    public List<Circuit> getCircuitsFromApi(boolean asJson);
+    public List<Circuit> getCircuits(boolean asJson);
 
 }
