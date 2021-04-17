@@ -5,9 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.idiotproof.fantasy.f1.backend.models.Circuit;
-import com.idiotproof.fantasy.f1.backend.models.Constructor;
-import com.idiotproof.fantasy.f1.backend.models.Driver;
+import com.idiotproof.fantasy.f1.backend.models.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -35,14 +33,70 @@ public class ErgastHttpImpl implements ErgastHttp {
 
     private static HttpResponse<String> response;
 
+    // adding configs to ignore unknown fields from the json response
+    private final static ObjectMapper mapper = new ObjectMapper()
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
+
+    @Override
     public List<Driver> getDrivers(boolean asJson) {
-
         String driverUrl = API_URL + "/2020/drivers";
         if (asJson) driverUrl += ".json";
+        buildRequest(driverUrl);
+        sendRequest(driverUrl);
+        return mapResponseToObject("/MRData/DriverTable/Drivers");
+    }
 
+    @Override
+    public List<Constructor> getConstructors(boolean asJson) {
+        String constructorUrl = API_URL + "/2020/constructors";
+        if (asJson) constructorUrl += ".json";
+        buildRequest(constructorUrl);
+        sendRequest(constructorUrl);
+        return mapResponseToObject("/MRData/ConstructorTable/Constructors");
+    }
+
+    @Override
+    public List<Circuit> getCircuits(boolean asJson) {
+        String circuitUrl = API_URL + "/2020/circuits";
+        if (asJson) circuitUrl += ".json";
+        buildRequest(circuitUrl);
+        sendRequest(circuitUrl);
+        return mapResponseToObject("/MRData/CircuitTable/Circuits");
+    }
+
+    // todo: url and path
+    @Override
+    public List<FastestLap> getFastestLaps(boolean asJson) {
+        String circuitUrl = API_URL + "/2020/circuits";
+        if (asJson) circuitUrl += ".json";
+        buildRequest(circuitUrl);
+        sendRequest(circuitUrl);
+        return mapResponseToObject("/MRData/CircuitTable/Circuits");
+    }
+
+    // todo: url and path
+    @Override
+    public List<Race> getRaces(boolean asJson) {
+        String circuitUrl = API_URL + "/2020/circuits";
+        if (asJson) circuitUrl += ".json";
+        buildRequest(circuitUrl);
+        sendRequest(circuitUrl);
+        return mapResponseToObject("/MRData/CircuitTable/Circuits");
+    }
+
+    // todo: url and path
+    @Override
+    public List<Result> getResults(boolean asJson) {
+        String circuitUrl = API_URL + "/2020/current/last/results";
+        if (asJson) circuitUrl += ".json";
+        buildRequest(circuitUrl);
+        sendRequest(circuitUrl);
+        return mapResponseToObject("/MRData/RaceTable/Races/Results");
+    }
+
+    private void buildRequest(String driverUrl) {
         try {
-
             request = HttpRequest.newBuilder()
                     .uri(new URI(driverUrl))
                     .timeout(Duration.of(5, SECONDS))
@@ -51,62 +105,13 @@ public class ErgastHttpImpl implements ErgastHttp {
 
         } catch (URISyntaxException e) {
             LOG.error("Error when creating HttpRequest: " + e);
-            return null;
         }
-
-        try {
-
-            LOG.info("Getting driver data from url: " + driverUrl);
-            response = HttpClient.newBuilder()
-                    .proxy(ProxySelector.getDefault())
-                    .build()
-                    .send(request, HttpResponse.BodyHandlers.ofString());
-
-        } catch (IOException | InterruptedException e) {
-            LOG.error("Error when sending HttpRequest: " + e);
-            return null;
-        }
-
-        JsonNode jsonNode;
-        List<Driver> drivers = null;
-        // adding configs to ignore unknown fields
-        ObjectMapper mapper = new ObjectMapper()
-                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-        try {
-
-            jsonNode = mapper.readTree(response.body()).at("/MRData/DriverTable/Drivers");
-            drivers = mapper.convertValue(jsonNode, new TypeReference<List<Driver>>() {});
-
-        } catch (JsonProcessingException e) {
-            LOG.error("Error when converting response to Json: " + e);
-        }
-
-        return drivers;
     }
 
-    @Override
-    public List<Constructor> getConstructors(boolean asJson) {
-
-        String constructorUrl = API_URL + "/2020/constructors";
-        if (asJson) constructorUrl += ".json";
-
+    private void sendRequest(String driverUrl) {
         try {
 
-            request = HttpRequest.newBuilder()
-                    .uri(new URI(constructorUrl))
-                    .timeout(Duration.of(5, SECONDS))
-                    .GET()
-                    .build();
-
-        } catch (URISyntaxException e) {
-            LOG.error("Error when creating HttpRequest: " + e);
-            return null;
-        }
-
-        try {
-
-            LOG.info("Getting constructor data from url: " + constructorUrl);
+            LOG.info("Getting data from url: " + driverUrl);
             response = HttpClient.newBuilder()
                     .proxy(ProxySelector.getDefault())
                     .build()
@@ -114,71 +119,20 @@ public class ErgastHttpImpl implements ErgastHttp {
 
         } catch (IOException | InterruptedException e) {
             LOG.error("Error when sending HttpRequest: " + e);
-            return null;
         }
-
-        JsonNode jsonNode;
-        List<Constructor> constructors = null;
-        ObjectMapper mapper = new ObjectMapper();
-
-        try {
-
-            jsonNode = mapper.readTree(response.body()).at("/MRData/ConstructorTable/Constructors");
-            constructors = mapper.convertValue(jsonNode, new TypeReference<List<Constructor>>() {});
-
-        } catch (JsonProcessingException e) {
-            LOG.error("Error when converting response to Json: " + e);
-        }
-
-        return constructors;
     }
 
-    @Override
-    public List<Circuit> getCircuits(boolean asJson) {
-
-        String circuitUrl = API_URL + "/2020/circuits";
-        if (asJson) circuitUrl += ".json";
-
-        try {
-
-            request = HttpRequest.newBuilder()
-                    .uri(new URI(circuitUrl))
-                    .timeout(Duration.of(5, SECONDS))
-                    .GET()
-                    .build();
-
-        } catch (URISyntaxException e) {
-            LOG.error("Error when creating HttpRequest: " + e);
-            return null;
-        }
-
-        try {
-
-            LOG.info("Getting circuit data from url: " + circuitUrl);
-            response = HttpClient.newBuilder()
-                    .proxy(ProxySelector.getDefault())
-                    .build()
-                    .send(request, HttpResponse.BodyHandlers.ofString());
-
-        } catch (IOException | InterruptedException e) {
-            LOG.error("Error when sending HttpRequest: " + e);
-            return null;
-        }
-
+    private <T> List<T> mapResponseToObject(String path) {
         JsonNode jsonNode;
-        List<Circuit> circuits = null;
-        ObjectMapper mapper = new ObjectMapper();
-
+        List<T> listFromResponse = null;
         try {
-
-            jsonNode = mapper.readTree(response.body()).at("/MRData/CircuitTable/Circuits");
-            circuits = mapper.convertValue(jsonNode, new TypeReference<List<Circuit>>() {});
+            jsonNode = mapper.readTree(response.body()).at(path);
+            listFromResponse = mapper.convertValue(jsonNode, new TypeReference<>() {});
 
         } catch (JsonProcessingException e) {
             LOG.error("Error when converting response to Json: " + e);
         }
-
-        return circuits;
+        return listFromResponse;
     }
 
 }

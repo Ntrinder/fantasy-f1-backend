@@ -7,6 +7,8 @@ import java.util.Optional;
 
 public interface FastestLapService {
 
+    List<FastestLap> updateFastestLaps();
+
     List<FastestLap> findFastestLaps();
 
     Optional<FastestLap> findFastestLap(String id);

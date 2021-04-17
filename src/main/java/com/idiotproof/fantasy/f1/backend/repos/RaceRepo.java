@@ -6,4 +6,14 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RaceRepo extends JpaRepository<Race, Integer> {
+
+    Race findBySeasonAndRoundAndDateAndTime(int season, int round, String date, String time);
+
+    default Race findByRace(Race race) {
+        return findBySeasonAndRoundAndDateAndTime(
+                race.getSeason(),
+                race.getRound(),
+                race.getDate(),
+                race.getTime());
+    }
 }

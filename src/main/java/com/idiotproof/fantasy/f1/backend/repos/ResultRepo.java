@@ -6,4 +6,14 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ResultRepo extends JpaRepository<Result, Integer> {
+
+    Result findByPositionAndStatusAndTime(int position, String status, String time);
+
+    default Result findByResult(Result result) {
+        return findByPositionAndStatusAndTime(
+                result.getPosition(),
+                result.getStatus(),
+                result.getTime());
+    }
+
 }
